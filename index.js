@@ -90,6 +90,7 @@ export default (addressString) => {
 
   if (parsed.sec_unit_type) {
     switch(parsed.sec_unit_type.toUpperCase()) {
+      case 'P O BOX':
       case 'PO BOX':
         output = parsePOBox(parsed)
         break

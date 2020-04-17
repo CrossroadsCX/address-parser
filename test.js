@@ -6,7 +6,8 @@ describe('Address Parser', () => {
       'PO BOX 1234',
       'PO Box 986',
       'po box 37213',
-      'P.O. Box 5432'
+      'P.O. Box 5432',
+      'P O Box 8769',
     ]
 
     const expectedOutputs = [
@@ -14,6 +15,7 @@ describe('Address Parser', () => {
       { post_office_box_number: 'PO BOX 986' },
       { post_office_box_number: 'PO BOX 37213' },
       { post_office_box_number: 'PO BOX 5432' },
+      { post_office_box_number: 'PO BOX 8769' },
     ]
 
     inputs.map(( input, index ) => {
