@@ -1,6 +1,6 @@
 {
-  "name": "address-parser",
-  "version": "1.0.0",
+  "name": "@crossroadscx/address-parser",
+  "version": "0.0.1",
   "main": "index.js",
   "repository": "git@github.com:CrossroadsCX/address-parser.git",
   "author": "Chris Birk <cmbirk@gmail.com>",

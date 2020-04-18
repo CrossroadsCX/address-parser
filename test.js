@@ -94,24 +94,29 @@ describe('Address Parser', () => {
     })
   })
 
-  // test('It should handle numbered highway addresses', () => {
-  //   const inputs = [
-  //     '104 NC HWY 305',
-  //   ]
+  test('It should handle numbered highway addresses', () => {
+    const inputs = [
+      '104 NC HWY 305',
+      '567 Highway 204',
+    ]
 
-  //   const expectedOutputs = [
-  //     {
-  //       street_address: '104 NC HWY 305',
-  //       street_address2: ''
-  //     }
-  //   ]
+    const expectedOutputs = [
+      {
+        street_address: '104 NC HWY 305',
+        street_address2: ''
+      },
+      {
+        street_address: '567 HWY 204',
+        street_address2: '',
+      }
+    ]
 
-  //   inputs.map(( input, index ) => {
-  //     const output = parseAddress(input)
+    inputs.map(( input, index ) => {
+      const output = parseAddress(input)
 
-  //     expect(output).toEqual(expectedOutputs[index])
-  //   })
-  // })
+      expect(output).toEqual(expectedOutputs[index])
+    })
+  })
 
   test('It should handle directional suffixes', () => {
     const inputs = [

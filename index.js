@@ -33,17 +33,9 @@ const parseStreetAddress = ({ number, prefix, street, type }) => {
 
 // sec_unit_type = '#'
 const parseNumberedApartment = (parsed) => {
-  const {
-    number,
-    sec_unit_num,
-    sec_unit_type,
-    street,
-    type
-  } = parsed
-
   return {
     street_address: parseStreetAddress(parsed),
-    street_address2: `${sec_unit_type}${sec_unit_num}`,
+    street_address2: `${parsed.sec_unit_type}${parsed.sec_unit_num}`,
   }
 }
 
@@ -52,6 +44,16 @@ const parseUnit = (parsed) => {
   return {
     street_address: parseStreetAddress(parsed),
     street_address2: `${parsed.sec_unit_type} ${parsed.sec_unit_num}`.toUpperCase(),
+  }
+}
+
+const parseHighwayAddress = (parsed, addressString) => {
+  const highwayNumMatch = addressString.match(/\s(\d+)$/)
+  const highwayNum = highwayNumMatch[1]
+
+  return {
+    street_address: `${parsed.number} ${parsed.street} ${parsed.type || ''} ${highwayNum}`.toUpperCase().replace(/\s+/g, ' '),
+    street_address2: '',
   }
 }
 
@@ -77,6 +79,7 @@ const parseNormalAddress = (parsed) => {
 
 export default (addressString) => {
   const parsed = parser.parseLocation(addressString)
+
   let output = parsed
 
   const match = addressString.match(unlabeledRegex)
@@ -107,11 +110,17 @@ export default (addressString) => {
         output = parseUnlabeledUnit(addressString)
         break
       default:
-        console.log(parsed)
         throw new Error(`Unknown address type: ${addressString}`)
     }
   } else {
-    output = parseNormalAddress(parsed)
+    if (parsed.type &&['HWY', 'HIGHWAY'].includes(parsed.type.toUpperCase() )) {
+      output = parseHighwayAddress(parsed, addressString)
+    } else if (parsed.street && ['HIGHWAY'].includes(parsed.street.toUpperCase())) {
+      parsed.street = 'HWY'
+      output = parseHighwayAddress(parsed, addressString)
+    } else {
+      output = parseNormalAddress(parsed)
+    }
   }
 
   return output
